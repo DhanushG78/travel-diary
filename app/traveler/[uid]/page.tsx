@@ -31,8 +31,8 @@ export default async function TravelerPage({ params }: { params: Promise<{ uid: 
 
       <div className="bg-zinc-900 border border-white/10 rounded-3xl p-8 mb-12 flex flex-col md:flex-row items-center md:items-start gap-8">
         <div className="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden bg-indigo-500 border-4 border-indigo-400 flex-shrink-0 flex items-center justify-center text-5xl font-bold">
-          {traveler.profile_picture?.url ? (
-            <img src={traveler.profile_picture.url} alt={traveler.full_name} className="w-full h-full object-cover" />
+          {traveler.profile_image?.url ? (
+            <img src={traveler.profile_image.url} alt={traveler.full_name || traveler.name} className="w-full h-full object-cover" />
           ) : (
             (traveler.full_name || traveler.name || "A").charAt(0)
           )}

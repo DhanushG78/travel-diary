@@ -7,10 +7,17 @@ const Stack = Contentstack.Stack({
 });
 
 async function run() {
-  const Query = Stack.ContentType("travel_story").Query();
-  const res = await Query.toJSON().find();
-  const story = res[0][0];
-  console.log(JSON.stringify(story.content_sections, null, 2));
+  try {
+    const Query = Stack.ContentType("traveler").Query();
+    const res = await Query.toJSON().find();
+    if (res && res[0] && res[0].length > 0) {
+      console.log(JSON.stringify(res[0][0], null, 2));
+    } else {
+      console.log("No travelers found");
+    }
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 run();

@@ -36,3 +36,9 @@ export const getStoriesByTraveler = async (uid: string) => {
     s.traveler?.some((t: any) => t.uid === uid)
   );
 };
+
+export const getTravelers = async () => {
+  const Query = Stack.ContentType("traveler").Query();
+  const result = await Query.toJSON().find();
+  return result[0] || [];
+};
