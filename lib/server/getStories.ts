@@ -1,5 +1,12 @@
 import Stack from "../contentstack";
 
+export const setLivePreviewQuery = (query: any) => {
+  if (typeof window !== "undefined") {
+    Stack.livePreviewQuery(query);
+  }
+};
+
+
 export const getStories = async () => {
   const Query = Stack.ContentType("travel_story").Query();
 
