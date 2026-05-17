@@ -1,13 +1,20 @@
 import { NextResponse } from "next/server";
-import { getStory } from "@/lib/server/getStories";
+import { getStory, setLivePreviewQuery } from "@/lib/server/getStories";
 
 export async function GET(
-  _request: Request,
+  request: Request,
   context: { params: Promise<{ slug: string }> }
 ) {
   const params = await context.params;
 
   try {
+    const { searchParams } = new URL(request.url);
+    const queryString = searchParams.toString();
+    
+    if (queryString) {
+      setLivePreviewQuery("?" + queryString);
+    }
+
     const story = await getStory(params.slug);
 
     if (!story) {

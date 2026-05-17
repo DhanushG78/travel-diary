@@ -1,12 +1,12 @@
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
 
-export const initializeLivePreview = () => {
+export const initializeLivePreview = (apiKey: string, environment: string) => {
   if (typeof window !== "undefined") {
     ContentstackLivePreview.init({
       enable: true,
       stackDetails: {
-        apiKey: process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY as string,
-        environment: process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || "development",
+        apiKey,
+        environment,
       },
       clientUrlParams: {
         host: "rest-preview.contentstack.com",

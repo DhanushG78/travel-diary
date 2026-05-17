@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getStory, setLivePreviewQuery } from "@/lib/server/getStories";
+import { useEffect, useState, useCallback } from "react";
 import { StoryClient } from "./StoryClient";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
 import { initializeLivePreview } from "@/lib/livePreview";
@@ -15,28 +14,49 @@ export default function StoryPage() {
   const [story, setStory] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchStory = async () => {
+  const fetchStory = useCallback(async () => {
     try {
-      if (typeof window !== "undefined") {
-        setLivePreviewQuery(window.location.search);
+      let url = `/api/story/${slug}`;
+      if (typeof window !== "undefined" && window.location.search) {
+        url += window.location.search;
       }
-      const data = await getStory(slug);
-      setStory(data);
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        setStory(data);
+      } else {
+        setStory(null);
+      }
     } catch (error) {
       console.error("Failed to fetch story", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [slug]);
 
   useEffect(() => {
-    initializeLivePreview();
-    fetchStory();
+    const init = async () => {
+      try {
+        const res = await fetch("/api/config");
+        const config = await res.json();
+        
+        if (config.apiKey) {
+          initializeLivePreview(config.apiKey, config.environment);
+        }
+        
+        await fetchStory();
 
-    ContentstackLivePreview.onEntryChange(() => {
-      fetchStory();
-    });
-  }, [slug]);
+        ContentstackLivePreview.onEntryChange(() => {
+          fetchStory();
+        });
+      } catch (err) {
+        console.error("Failed to initialize", err);
+        setLoading(false);
+      }
+    };
+
+    init();
+  }, [fetchStory]);
 
   if (loading) {
     return (
