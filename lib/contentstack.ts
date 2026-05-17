@@ -1,9 +1,9 @@
 import Contentstack from "contentstack";
 
-const apiKey = process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY;
-const previewToken = process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW_TOKEN;
-const deliveryToken = process.env.NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN;
-const environment = process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || "development";
+const apiKey = process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY || process.env.CONTENTSTACK_API_KEY;
+const previewToken = process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW_TOKEN || process.env.CONTENTSTACK_PREVIEW_TOKEN;
+const deliveryToken = process.env.NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN || process.env.CONTENTSTACK_DELIVERY_TOKEN;
+const environment = process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || process.env.CONTENTSTACK_ENVIRONMENT || "development";
 
 if (!apiKey) {
   throw new Error("Missing Contentstack API Key.");
